@@ -260,14 +260,17 @@ let contextMenuTargetList = null;   // list object for list context menu
 
 // ─── Boot ─────────────────────────────────────────────────────────────────────
 async function init() {
-  const saved = await window.electronAPI.loadData();
+  // ĐỔI Ở ĐÂY: Lấy data từ bộ nhớ trình duyệt thay vì Electron
+  const rawData = localStorage.getItem('todoexp_data');
+  const saved = rawData ? JSON.parse(rawData) : {};
   state = { ...state, ...saved };
 
   applyDark();
   applyI18n();
 
-  const version = await window.electronAPI.getVersion();
-  document.getElementById('versionLabel').textContent = 'v' + version;
+  // ĐỔI Ở ĐÂY: Tự điền version vì PWA không đọc được từ file package.json của Electron
+  document.getElementById('versionLabel').textContent = 'v1.0.1';
+
   if (state.sidebarWidth) {
     document.getElementById('sidebar').style.width = state.sidebarWidth + 'px';
   }
@@ -294,16 +297,16 @@ async function init() {
 // ─── Static Event Binding ─────────────────────────────────────────────────────
 // All buttons in the HTML get their listeners here — no inline onclick needed.
 function bindStaticEvents() {
-  // Title bar
-  document.getElementById('btnMinimize').addEventListener('click', () => window.electronAPI.minimizeWindow());
-  document.getElementById('btnMaximize').addEventListener('click', () => window.electronAPI.maximizeWindow());
-  document.getElementById('btnClose').addEventListener('click',    () => window.electronAPI.closeWindow());
+  // // Title bar
+  // document.getElementById('btnMinimize').addEventListener('click', () => window.electronAPI.minimizeWindow());
+  // document.getElementById('btnMaximize').addEventListener('click', () => window.electronAPI.maximizeWindow());
+  // document.getElementById('btnClose').addEventListener('click',    () => window.electronAPI.closeWindow());
 
-  // Sidebar
-  document.getElementById('btnNewList').addEventListener('click', createList);
-  document.getElementById('darkToggleBtn').addEventListener('click', toggleDark);
-  document.getElementById('langToggleBtn').addEventListener('click', toggleLang);
-  document.getElementById('dataFolderBtn').addEventListener('click', () => window.electronAPI.openDataFolder());
+  // // Sidebar
+  // document.getElementById('btnNewList').addEventListener('click', createList);
+  // document.getElementById('darkToggleBtn').addEventListener('click', toggleDark);
+  // document.getElementById('langToggleBtn').addEventListener('click', toggleLang);
+  // document.getElementById('dataFolderBtn').addEventListener('click', () => window.electronAPI.openDataFolder());
 
   // Task input
   document.getElementById('taskInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
@@ -437,7 +440,10 @@ function bindTaskListDelegation() {
 // ─── Auto Save ────────────────────────────────────────────────────────────────
 function scheduleSave() {
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => window.electronAPI.saveData(state), 300);
+  saveTimer = setTimeout(() => {
+    // ĐỔI Ở ĐÂY: Lưu data vào localStorage
+    localStorage.setItem('todoexp_data', JSON.stringify(state));
+  }, 300);
 }
 
 // ─── i18n ─────────────────────────────────────────────────────────────────────

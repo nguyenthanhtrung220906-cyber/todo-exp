@@ -758,3 +758,7 @@ body.dark .streak-active .streak-count {
   70%  { opacity: 1; transform: translateX(-50%) translateY(0);     }
   100% { opacity: 0; transform: translateX(-50%) translateY(-4px);  }
 }
+@media (max-width: 768px) {
+  .title-bar { display: none; }
+  .app-shell { margin-top: 0; height: calc(100vh - var(--expbar-h)); }
+}
