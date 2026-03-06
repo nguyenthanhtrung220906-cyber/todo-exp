@@ -122,6 +122,22 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   transition: background var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+}
+.resizer {
+  width: 5px;
+  cursor: ew-resize; 
+  background-color: transparent; 
+  z-index: 100;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+.resizer:hover, .resizer.active-drag {
+  background-color: var(--primary);
+}
+body.is-dragging {
+  cursor: ew-resize !important;
+  user-select: none !important;
 }
 .sidebar-inner {
   display: flex; flex-direction: column;

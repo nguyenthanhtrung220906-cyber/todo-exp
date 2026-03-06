@@ -1,7 +1,7 @@
 {
   "name": "todo-exp",
   "productName": "Todo EXP",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A gamified productivity app with EXP and level system",
   "main": "main.js",
   "author": {

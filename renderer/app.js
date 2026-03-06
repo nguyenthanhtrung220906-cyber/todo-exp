@@ -241,7 +241,8 @@ let state = {
   tasks: {},
   exp: 0,
   dark: false,
-  activeListId: null
+  activeListId: null,
+  sidebarWidth: 256
 };
 
 let currentFilter  = 'all';
@@ -267,6 +268,9 @@ async function init() {
 
   const version = await window.electronAPI.getVersion();
   document.getElementById('versionLabel').textContent = 'v' + version;
+  if (state.sidebarWidth) {
+    document.getElementById('sidebar').style.width = state.sidebarWidth + 'px';
+  }
 
   renderSidebar();
 
@@ -284,6 +288,7 @@ async function init() {
   bindStaticEvents();
   bindContextMenuDismiss();
   bindTaskListDelegation();
+  bindResizer();
 }
 
 // ─── Static Event Binding ─────────────────────────────────────────────────────
@@ -1092,6 +1097,38 @@ function escHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function bindResizer() {
+  const sidebar = document.getElementById('sidebar');
+  const resizer = document.getElementById('dragHandle');
+  let isResizing = false;
+
+  resizer.addEventListener('mousedown', () => {
+    isResizing = true;
+    resizer.classList.add('active-drag');
+    document.body.classList.add('is-dragging'); 
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    let newWidth = e.clientX;
+    // Khống chế kích thước: nhỏ nhất 150px, to nhất 500px
+    if (newWidth < 150) newWidth = 150;
+    if (newWidth > 500) newWidth = 500;
+    sidebar.style.width = newWidth + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      resizer.classList.remove('active-drag');
+      document.body.classList.remove('is-dragging');
+      // Lưu lại độ rộng vào file JSON
+      state.sidebarWidth = parseInt(sidebar.style.width, 10);
+      scheduleSave();
+    }
+  });
 }
 
 // ─── Start ────────────────────────────────────────────────────────────────────
