@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:;" />
+  <title>Todo EXP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Custom Title Bar -->
+<div id="titleBar" class="title-bar">
+  <div class="title-bar-brand">
+    <div class="title-bar-icon">⚡</div>
+    <span class="title-bar-name">Todo EXP</span>
+  </div>
+  <div class="title-bar-drag"></div>
+  <div class="title-bar-controls">
+    <button class="tb-btn tb-minimize" id="btnMinimize" title="Minimize">─</button>
+    <button class="tb-btn tb-maximize" id="btnMaximize" title="Maximize">▢</button>
+    <button class="tb-btn tb-close"    id="btnClose"    title="Close">✕</button>
+  </div>
+</div>
+
+<!-- App Shell -->
+<div id="app" class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-lists" id="sidebarLists"></div>
+      <button class="new-list-btn" id="btnNewList">
+        <span class="plus">+</span>
+        <span data-i18n="newList">New List</span>
+      </button>
+      <div class="sidebar-footer">
+        <button class="footer-btn" id="darkToggleBtn" title="Toggle dark mode">🌙</button>
+        <button class="footer-btn" id="langToggleBtn" title="Switch language">🌐</button>
+        <button class="footer-btn" id="dataFolderBtn" title="Open data folder">📁</button>
+        <span class="version-label" id="versionLabel">v1.0.0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main id="mainArea" class="main-area">
+    <div id="emptyMain" class="empty-placeholder" style="display:none">
+      <div class="empty-icon">📋</div>
+      <p data-i18n="selectList">Select or create a list to get started</p>
+    </div>
+
+    <div id="listView" style="display:none">
+      <div class="list-header">
+        <div class="list-header-left">
+          <span class="list-header-icon" id="listHeaderIcon">☀️</span>
+          <div>
+            <h1 class="list-title" id="listTitle">My Day</h1>
+            <p class="list-subtitle" id="listSubtitle"></p>
+          </div>
+        </div>
+        <div class="header-level-badge" id="headerLevelBadge">⚡ LVL 1</div>
+      </div>
+
+      <div class="task-input-wrap">
+        <span class="input-plus-icon">+</span>
+        <input type="text" id="taskInput" class="task-input" autocomplete="off" spellcheck="false" />
+        <button id="addTaskBtn" class="add-task-btn" style="display:none" data-i18n="add">Add</button>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all"       id="filterAll"       data-i18n="all">All</button>
+        <button class="filter-btn"        data-filter="active"    id="filterActive"    data-i18n="active">Active <span id="activeCount" class="f-count"></span></button>
+        <button class="filter-btn"        data-filter="completed" id="filterCompleted" data-i18n="completed">Completed</button>
+      </div>
+
+      <div class="task-list" id="taskList"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Level Up Indicator (sits above the EXP bar, fades in/out) -->
+<div id="levelUpIndicator" class="level-up-indicator level-up-hidden"></div>
+
+<!-- EXP Bar -->
+<div class="exp-bar" id="expBar">
+  <div class="exp-level-block">
+    <span class="exp-lvl-label" data-i18n="lvl">LVL</span>
+    <span class="exp-lvl-num" id="expLvlNum">1</span>
+  </div>
+  <div class="exp-track-wrap">
+    <div class="exp-track">
+      <div class="exp-fill" id="expFill" style="width:0%">
+        <div class="exp-shimmer"></div>
+      </div>
+      <div class="exp-mark" style="left:25%"></div>
+      <div class="exp-mark" style="left:50%"></div>
+      <div class="exp-mark" style="left:75%"></div>
+    </div>
+  </div>
+  <div class="exp-num-block">
+    <span class="exp-cur" id="expCur">0</span>
+    <span class="exp-sep">/</span>
+    <span class="exp-max" id="expMax">100 EXP</span>
+  </div>
+  <!-- Streak display: right side of EXP bar -->
+  <div id="streakDisplay" class="streak-display" title=""></div>
+</div>
+
+<!-- Context Menu (single global instance) -->
+<div id="contextMenu" class="context-menu" style="display:none"></div>
+
+<!-- Modal -->
+<div id="modalOverlay" class="modal-overlay" style="display:none">
+  <div id="modal" class="modal"></div>
+</div>
+
+<!-- EXP Particles -->
+<div id="particles" class="particles-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
