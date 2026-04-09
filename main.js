@@ -4,7 +4,6 @@
  */
 
 const { app, BrowserWindow, ipcMain, shell, Menu, Tray, nativeImage } = require('electron');
-const { autoUpdater } = require('electron-updater'); // Thêm autoUpdater nè bro
 const path = require('path');
 const fs = require('fs');
 
@@ -118,11 +117,6 @@ function createWindow() {
     if (isDev) {
       mainWindow.webContents.openDevTools();
     }
-    
-    // Chỉ check update khi KHÔNG phải là môi trường dev
-    if (!isDev) {
-      autoUpdater.checkForUpdatesAndNotify();
-    }
   });
 
   // Open external links in browser, not Electron
@@ -148,26 +142,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
-});
-
-// ─── Auto Updater Events ───────────────────────────────────────────────────────
-// Gửi thông báo về cho UI để show trạng thái update
-autoUpdater.on('update-available', () => {
-  if (mainWindow) mainWindow.webContents.send('update-message', 'Có bản update mới nha đại ca!');
-});
-
-autoUpdater.on('download-progress', (progressObj) => {
-  // Gửi phần trăm tải xuống về cho renderer làm progress bar
-  if (mainWindow) mainWindow.webContents.send('update-progress', progressObj.percent);
-});
-
-autoUpdater.on('update-downloaded', () => {
-  if (mainWindow) mainWindow.webContents.send('update-downloaded', 'Tải xong rồi, khởi động lại để cài nhé!');
-});
-
-// Lắng nghe lệnh từ UI yêu cầu cài đặt và restart
-ipcMain.on('app:installUpdate', () => {
-  autoUpdater.quitAndInstall();
 });
 
 // ─── IPC Handlers ─────────────────────────────────────────────────────────────

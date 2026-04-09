@@ -1,7 +1,7 @@
 {
   "name": "todo-exp",
   "productName": "Todo EXP",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A gamified productivity app with EXP and level system",
   "main": "main.js",
   "author": {
@@ -39,9 +39,7 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ],
       "icon": "assets/icon.ico",
@@ -61,25 +59,14 @@
       "menuCategory": "Productivity",
       "artifactName": "TodoEXP-Setup-${version}.exe",
       "license": "assets/license.txt",
-      "installerLanguages": [
-        "en-US"
-      ],
+      "installerLanguages": ["en-US"],
       "displayLanguageSelector": false
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "nguyenthanhtrung220906-cyber",
-        "repo": "todo-exp"
-      }
-    ],
     "extraResources": [
       {
         "from": "data",
         "to": "data",
-        "filter": [
-          "**/*"
-        ]
+        "filter": ["**/*"]
       }
     ]
   },
@@ -88,7 +75,6 @@
     "electron-builder": "^24.9.1"
   },
   "dependencies": {
-    "electron-store": "^8.1.0",
-    "electron-updater": "^6.8.3"
+    "electron-store": "^8.1.0"
   }
 }

@@ -33,10 +33,18 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
       <div class="sidebar-lists" id="sidebarLists"></div>
-      <button class="new-list-btn" id="btnNewList">
-        <span class="plus">+</span>
-        <span data-i18n="newList">New List</span>
-      </button>
+
+      <!-- Sidebar action buttons -->
+      <div class="sidebar-actions">
+        <button class="sidebar-action-btn" id="btnNewList" title="New List (Ctrl+N)">
+          <span class="sa-icon">📄</span>
+          <span data-i18n="newList">New List</span>
+        </button>
+        <button class="sidebar-action-btn" id="btnNewGroup" title="New Group (Ctrl+G)">
+          <span class="sa-icon">📁</span>
+          <span data-i18n="newGroup">New Group</span>
+        </button>
+      </div>
       <div class="sidebar-footer">
         <button class="footer-btn" id="darkToggleBtn" title="Toggle dark mode">🌙</button>
         <button class="footer-btn" id="langToggleBtn" title="Switch language">🌐</button>
@@ -45,9 +53,10 @@
       </div>
     </div>
   </aside>
+  
+  <div class="sidebar-resizer" id="sidebarResizer"></div>
 
   <!-- MAIN AREA -->
-  <div class="resizer" id="dragHandle"></div>
   <main id="mainArea" class="main-area">
     <div id="emptyMain" class="empty-placeholder" style="display:none">
       <div class="empty-icon">📋</div>

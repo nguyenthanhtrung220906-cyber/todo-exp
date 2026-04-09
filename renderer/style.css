@@ -122,22 +122,6 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   transition: background var(--transition), border-color var(--transition);
-  flex-shrink: 0;
-}
-.resizer {
-  width: 5px;
-  cursor: ew-resize; 
-  background-color: transparent; 
-  z-index: 100;
-  transition: background 0.15s ease;
-  flex-shrink: 0;
-}
-.resizer:hover, .resizer.active-drag {
-  background-color: var(--primary);
-}
-body.is-dragging {
-  cursor: ew-resize !important;
-  user-select: none !important;
 }
 .sidebar-inner {
   display: flex; flex-direction: column;
@@ -757,4 +741,163 @@ body.dark .streak-active .streak-count {
   12%  { opacity: 1; transform: translateX(-50%) translateY(0);     }
   70%  { opacity: 1; transform: translateX(-50%) translateY(0);     }
   100% { opacity: 0; transform: translateX(-50%) translateY(-4px);  }
+}
+
+/* ── Group System ────────────────────────────────────────────────────────────── */
+
+/* Replace the old single new-list-btn with a two-button row */
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 10px 10px;
+}
+
+.sidebar-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: 1.5px dashed var(--primary-dim);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+  transition: all 0.15s ease;
+  text-align: left;
+}
+.sidebar-action-btn:hover {
+  background: var(--primary-pale);
+  border-color: var(--primary);
+  border-style: solid;
+}
+.sa-icon { font-size: 14px; line-height: 1; }
+
+/* ── Group header row ─────────────────────────────────────────────────────────── */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px 4px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 4px 8px 0;
+  transition: background 0.12s ease;
+  user-select: none;
+}
+.group-header:hover { background: var(--surface2); }
+
+.group-chevron {
+  font-size: 9px;
+  color: var(--text-faint);
+  width: 12px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.group-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.group-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Lists inside a group get a left indent + connector line */
+.list-btn.grouped {
+  padding-left: 28px;
+  position: relative;
+}
+.list-btn.grouped::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Context menu separator / indent items ─────────────────────────────────── */
+.ctx-separator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: default;
+  user-select: none;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+.ctx-separator .ctx-icon { font-size: 12px; }
+
+.ctx-item.indent {
+  padding-left: 28px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.ctx-item.indent:hover { color: var(--primary); background: var(--primary-pale); }
+
+/* ── Resizable Sidebar ───────────────────────────────────────────────────────── */
+
+/*
+ * Biến CSS để sidebar lưu width hiện tại.
+ * Giá trị mặc định khớp với --sidebar-w đang có (260px).
+ * JS sẽ ghi đè biến này trực tiếp trên element .sidebar.
+ */
+.sidebar {
+  width: var(--sidebar-resized-w, var(--sidebar-w));
+  min-width: 160px;   /* giới hạn nhỏ nhất */
+  max-width: 480px;   /* giới hạn lớn nhất */
+  /* flex-shrink: 0 đảm bảo sidebar không tự co khi main area chật */
+  flex-shrink: 0;
+  /* Tắt transition width để kéo mượt, không bị lag animation */
+  transition: background var(--transition), border-color var(--transition);
+}
+
+/* Thanh kéo giữa sidebar và main */
+#sidebarResizer {
+  width: 4px;
+  cursor: col-resize;           /* con trỏ mũi tên 2 chiều ngang */
+  background: transparent;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 50;
+  transition: background 0.15s ease;
+  /* Mở rộng vùng click ra cả 2 phía để dễ bắt hơn */
+  margin: 0 -2px;
+}
+
+#sidebarResizer:hover,
+#sidebarResizer.is-dragging {
+  background: var(--primary);
+  opacity: 0.6;
+}
+
+/* Khi đang kéo: chặn text selection và con trỏ toàn trang */
+body.sidebar-is-resizing {
+  cursor: col-resize !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
