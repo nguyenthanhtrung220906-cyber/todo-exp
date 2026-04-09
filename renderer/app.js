@@ -339,7 +339,10 @@ function bindTaskListDelegation() {
 // ─── Auto-save ────────────────────────────────────────────────────────────────
 function scheduleSave() {
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => window.electronAPI.saveData(state), 300);
+  saveTimer = setTimeout(() => {
+    // ĐỔI Ở ĐÂY: Lưu data vào localStorage
+    localStorage.setItem('todoexp_data', JSON.stringify(state));
+  }, 300);
 }
 
 // ─── i18n / Dark ──────────────────────────────────────────────────────────────
